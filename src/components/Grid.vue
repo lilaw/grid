@@ -4,6 +4,7 @@
       class="column-unit"
       :style="{
         gridTemplateColumns: templateCol,
+        columnGap: columnGap,
       }"
     >
       <div v-for="(col, index) in columnArr" :key="index">
@@ -15,6 +16,7 @@
       class="row-unit"
       :style="{
         gridTemplateRows: templateRow,
+        rowGap: rowGap,
       }"
     >
       <div v-for="(row, index) in rowArr" :key="index">
@@ -28,6 +30,8 @@
         :style="{
           gridTemplateRows: templateRow,
           gridTemplateColumns: templateCol,
+          rowGap: rowGap,
+          columnGap: columnGap,
         }"
       >
         <div
@@ -37,7 +41,7 @@
           @mousedown="placeChild(item, 'down')"
           @mouseup="placeChild(item, 'up')"
         >
-          <!-- <span>{{ item }}</span> -->
+          <span style="opacity: 0">{{ item }}</span>
         </div>
       </section>
       <section
@@ -45,6 +49,8 @@
         :style="{
           gridTemplateRows: templateRow,
           gridTemplateColumns: templateCol,
+          rowGap: rowGap,
+          columnGap: columnGap,
         }"
       >
         <div
@@ -188,9 +194,9 @@ main {
     pointer-events: none;
     display: flex;
     align-items: flex-start;
-   &::before{
-     content: 'div' counter(childrentCount);
-   } 
+    &::before {
+      content: "div" counter(childrentCount);
+    }
     button {
       pointer-events: auto;
       cursor: pointer;

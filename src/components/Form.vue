@@ -28,9 +28,9 @@
         <label for="columnGap">Column Gap:</label>
         <input
           id="columnGap"
-          type="number"
+          type="text"
           :value="columnGap"
-          @change="this.updateColumnGap(+$event.target.value)"
+          @change="this.updateColumnGap($event.target.value)"
           min="1"
           max="12"
         />
@@ -39,24 +39,60 @@
         <label for="rowGap">Row Gap:</label>
         <input
           id="rowGap"
-          type="number"
-          @change="this.updateRowGap(+$event.target.value)"
+          type="text"
+          @change="this.updateRowGap($event.target.value)"
           :value="rowGap"
           min="1"
           max="12"
         />
       </p>
     </fieldset>
+    <button @click="showCodeModal = true">Show code</button>
+    <Modal v-if="showCodeModal" @close="showCodeModal = false">
+      <template v-slot:header>Your Code</template>
+      <template v-slot:body><Code /></template>
+    </Modal>
   </aside>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, toRefs, reactive } from "vue";
 import { mapState, mapMutations } from "vuex";
+import Modal from "@/components/Modal.vue";
+import Code from '@/components/Code.vue';
+
 
 export default defineComponent({
   setup() {
-    return {};
+    const state = reactive({
+      showCodeModal: false,
+    });
+    return {
+      ...toRefs(state),
+    };
+  },
+  components: {
+    Modal,
+
+    Code
+  },
+  watch: {
+    columns(newv, oldv) {
+      const payload = {
+        newv,
+        oldv,
+        direction: "columnArr",
+      };
+      this.adjustArr(payload);
+    },
+    rows(newv, oldv) {
+      const payload = {
+        newv,
+        oldv,
+        direction: "rowArr",
+      };
+      this.adjustArr(payload);
+    },
   },
   computed: {
     ...mapState(["columns", "rows", "columnGap", "rowGap"]),
@@ -67,6 +103,7 @@ export default defineComponent({
       "updateRows",
       "updateColumnGap",
       "updateRowGap",
+      "adjustArr",
     ]),
   },
 });
